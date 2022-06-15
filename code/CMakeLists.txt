@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(GPU_Algebra)
 
-enable_language(CUDA CXX)
+enable_language(CUDA)
 
 include(${CMAKE_SOURCE_DIR}/cmake_conan/conan.cmake)
 
@@ -28,3 +28,5 @@ find_package(Catch2 REQUIRED)
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/demos")
+add_subdirectory("${CMAKE_SOURCE_DIR}/src/gvec")
+add_subdirectory("${CMAKE_SOURCE_DIR}/tests/gvec")
