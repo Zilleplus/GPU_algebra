@@ -30,7 +30,7 @@ TEST_CASE("Given_2_Vec_Check_Sum")
     Vec sum = l + r;
 
     REQUIRE(sum.size() == l.size());
-    // REQUIRE(sum.size() == r.size());
-    // REQUIRE(sum.getValue(0) == Approx(5.0f).epsilon(1e-5));
-    // REQUIRE(sum.getValue(1) == Approx(8.0f).epsilon(1e-5));
+    REQUIRE(sum.size() == r.size());
+    REQUIRE(sum.getValue(0) == Approx(5.0f).epsilon(1e-5));
+    REQUIRE(sum.getValue(1) == Approx(8.0f).epsilon(1e-5));
 }

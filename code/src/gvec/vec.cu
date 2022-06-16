@@ -3,32 +3,35 @@
 #include<cuda.h>
 #include<assert.h>
 
+constexpr int N = 10;
+
 __global__ void VecAdd(const float* A, const float* B, float* C, int size)
 {
     int i = threadIdx.x;
     if(i < size)
     {
         C[i] = A[i] + B[i];
+        // printf("calc add %d \n", i);
+        // jumping like this is not so good for cach locality
+        i = i + N;
     }
 }
 
-constexpr int N = 10;
-
 namespace gvec{
-    Vec::Vec(int size){
+    Vec::Vec(int size) : size_(size){
         HANDLE_ERROR( cudaMalloc((void**)&d_, sizeof(float)*size) );
     }
 
     Vec::Vec(const std::initializer_list<float>& elements)
     {
-        auto s = std::size(elements);
-        HANDLE_ERROR( cudaMalloc((void**)&d_, sizeof(float)*s) );
-        int i = 0;
-        for(const auto v : elements)
-        {
-            setValue(i, v);
-            i = i + 1;
-        }
+        size_ = std::size(elements);
+        HANDLE_ERROR( cudaMalloc((void**)&d_, sizeof(float)*size_) );
+        HANDLE_ERROR( 
+            cudaMemcpy(
+                d_,                  // dst
+                std::data(elements), // src
+                sizeof(float)*size_, // size to copy
+                cudaMemcpyHostToDevice ) );
     }
 
     Vec::Vec(Vec&& other)
@@ -70,7 +73,8 @@ namespace gvec{
         assert(size() == other.size());
         Vec out(size());
 
-        VecAdd<<<N, 1>>>(d_, other.d_, out.d_, size_);
+        // Use 1 unit with N threads
+        VecAdd<<<1, N>>>(d_, other.d_, out.d_, size_);
 
         return out;
     }
