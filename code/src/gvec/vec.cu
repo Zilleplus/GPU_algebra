@@ -37,11 +37,18 @@ namespace gvec{
     Vec::Vec(Vec&& other)
     {
         d_ = other.d_;
+        // other.d_ to nullptr to avoid the cudaFree call.
+        other.d_ = nullptr;
+        other.d_ = 0;
         size_ = other.size_;
     }
 
     Vec::~Vec(){
-        cudaFree(d_);
+        if(d_!=nullptr)
+        {
+			cudaFree(d_);
+        }
+        d_ = nullptr;
     }
 
     int Vec::size() const{
