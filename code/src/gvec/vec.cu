@@ -3,15 +3,14 @@
 #include<cuda.h>
 #include<assert.h>
 
-constexpr int N = 10;
+constexpr int N = 1;
 
 __global__ void VecAdd(const float* A, const float* B, float* C, int size)
 {
     int i = threadIdx.x;
-    if(i < size)
+    while(i < size)
     {
         C[i] = A[i] + B[i];
-        // printf("calc add %d \n", i);
         // jumping like this is not so good for cach locality
         i = i + N;
     }
@@ -81,6 +80,7 @@ namespace gvec{
         Vec out(size());
 
         // Use 1 unit with N threads
+        // <<<blocks, threads>>>
         VecAdd<<<1, N>>>(d_, other.d_, out.d_, size_);
 
         return out;
