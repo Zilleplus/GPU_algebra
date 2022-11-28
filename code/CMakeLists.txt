@@ -6,7 +6,7 @@ enable_language(CUDA)
 include(${CMAKE_SOURCE_DIR}/cmake_conan/conan.cmake)
 
 conan_cmake_configure(REQUIRES
-        catch2/2.13.6
+        catch2/3.2.0
         GENERATORS
         ycm
         cmake_find_package

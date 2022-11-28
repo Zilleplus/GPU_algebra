@@ -1,4 +1,5 @@
-#include<catch2/catch.hpp>
+#include<catch2/catch_test_macros.hpp>
+#include<catch2/catch_approx.hpp>
 #include<gvec/vec.h>
 
 using namespace gvec;
@@ -9,8 +10,8 @@ TEST_CASE("Give_Vec_Set_Check_Get")
     v.setValue(0, 2.0f); 
     v.setValue(1, 3.0f);
 
-    REQUIRE(v.getValue(0) == Approx(2.0f).epsilon(1e-5));
-    REQUIRE(v.getValue(1) == Approx(3.0f).epsilon(1e-5));
+    REQUIRE(v.getValue(0) == Catch::Approx(2.0f).epsilon(1e-5));
+    REQUIRE(v.getValue(1) == Catch::Approx(3.0f).epsilon(1e-5));
 }
 
 
@@ -18,8 +19,8 @@ TEST_CASE("Give_Vec_Init_Check_Get")
 {
     Vec v = {2.0f, 3.0f};
 
-    REQUIRE(v.getValue(0) == Approx(2.0f).epsilon(1e-5));
-    REQUIRE(v.getValue(1) == Approx(3.0f).epsilon(1e-5));
+    REQUIRE(v.getValue(0) == Catch::Approx(2.0f).epsilon(1e-5));
+    REQUIRE(v.getValue(1) == Catch::Approx(3.0f).epsilon(1e-5));
 }
 
 TEST_CASE("Given_2_Vec_Check_Sum")
@@ -31,8 +32,8 @@ TEST_CASE("Given_2_Vec_Check_Sum")
 
     REQUIRE(sum.size() == l.size());
     REQUIRE(sum.size() == r.size());
-    REQUIRE(sum.getValue(0) == Approx(5.0f).epsilon(1e-5));
-    REQUIRE(sum.getValue(1) == Approx(8.0f).epsilon(1e-5));
+    REQUIRE(sum.getValue(0) == Catch::Approx(5.0f).epsilon(1e-5));
+    REQUIRE(sum.getValue(1) == Catch::Approx(8.0f).epsilon(1e-5));
 }
 
 TEST_CASE("Given_2_Vec_Check_Sub")
@@ -42,6 +43,7 @@ TEST_CASE("Given_2_Vec_Check_Sub")
 
     Vec sub = l - r;
 
+    using namespace Catch;
     REQUIRE(sub.size() == l.size());
     REQUIRE(sub.size() == r.size());
     REQUIRE(sub.getValue(0) == Approx(-1.0f).epsilon(1e-5));
@@ -55,6 +57,7 @@ TEST_CASE("Given_2_Vec_Check_Mul")
 
     Vec mul = l * r;
 
+    using namespace Catch;
     REQUIRE(mul.size() == l.size());
     REQUIRE(mul.size() == r.size());
     REQUIRE(mul.getValue(0) == Approx(6.0f).epsilon(1e-5));
@@ -68,6 +71,7 @@ TEST_CASE("Given_2_Vec_Check_Div")
 
     Vec div = l / r;
 
+    using namespace Catch;
     REQUIRE(div.size() == l.size());
     REQUIRE(div.size() == r.size());
     REQUIRE(div.getValue(0) == Approx(2.0f/3.0f).epsilon(1e-5));
@@ -81,5 +85,6 @@ TEST_CASE("Given_2_Vec_Dot")
 
     float dot_product = l.dot(r);
 
+    using namespace Catch;
     REQUIRE(dot_product == Approx(2.0f*3.0f + 3.0f*5.0f).epsilon(1e-5));
 }
